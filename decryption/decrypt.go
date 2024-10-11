@@ -5,10 +5,21 @@ import (
 	"crypto/cipher"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 )
+
+// LoadAESKey loads the AES key from the file in the "key/" directory
+func LoadAESKey() ([]byte, error) {
+	keyPath := filepath.Join("key", "aes.key")
+	key, err := ioutil.ReadFile(keyPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load AES key: %v", err)
+	}
+	return key, nil
+}
 
 // DecryptFile decrypts a single .enc file and restores it to its original form
 func DecryptFile(encFilePath string, key []byte) error {

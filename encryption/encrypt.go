@@ -6,18 +6,35 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
 
-// GenerateAESKey generates a 256-bit AES key
-func GenerateAESKey() []byte {
-	key := make([]byte, 32) // 32 bytes = 256 bits
+// GenerateAESKey generates a 256-bit AES key and saves it to a file
+func GenerateAndSaveAESKey() ([]byte, error) {
+	// Generate a random 256-bit AES key
+	key := make([]byte, 32)
 	_, err := rand.Read(key)
 	if err != nil {
-		panic(err.Error())
+		return nil, fmt.Errorf("failed to generate AES key: %v", err)
 	}
-	return key
+
+	// Ensure the "key/" directory exists
+	err = os.MkdirAll("key", 0755)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create key directory: %v", err)
+	}
+
+	// Save the key to a file
+	keyPath := filepath.Join("key", "aes.key")
+	err = ioutil.WriteFile(keyPath, key, 0644)
+	if err != nil {
+		return nil, fmt.Errorf("failed to save AES key: %v", err)
+	}
+
+	fmt.Println("AES key saved to:", keyPath)
+	return key, nil
 }
 
 // EncryptFile encrypts a single file and saves it with a .enc extension

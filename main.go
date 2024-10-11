@@ -32,27 +32,40 @@ func main() {
 	// Get the directory from the user
 	dirPath := getUserInput()
 
-	// Generate an AES-256 encryption key (or you could provide a way to reuse the same key)
-	key := encryption.GenerateAESKey()
-
 	// Perform the requested action (encrypt or decrypt)
 	switch choice {
 	case "e":
-		// Encrypt all files in the directory
-		err := encryption.EncryptFilesInDirectory(dirPath, key)
+		// Generate a random AES-256 encryption key and save it to a file
+		key, err := encryption.GenerateAndSaveAESKey()
+		if err != nil {
+			fmt.Println("Error generating and saving AES key:", err)
+			return
+		}
+
+		// Encrypt all files in the directory using the generated key
+		err = encryption.EncryptFilesInDirectory(dirPath, key)
 		if err != nil {
 			fmt.Println("Error encrypting files in the directory:", err)
 		} else {
 			fmt.Println("All files in the directory were encrypted successfully!")
 		}
+
 	case "d":
-		// Decrypt all .enc files in the directory
-		err := decryption.DecryptFilesInDirectory(dirPath, key)
+		// Load the saved AES key from the key directory
+		key, err := decryption.LoadAESKey()
+		if err != nil {
+			fmt.Println("Error loading AES key:", err)
+			return
+		}
+
+		// Decrypt all .enc files in the directory using the loaded key
+		err = decryption.DecryptFilesInDirectory(dirPath, key)
 		if err != nil {
 			fmt.Println("Error decrypting files in the directory:", err)
 		} else {
 			fmt.Println("All .enc files in the directory were decrypted successfully!")
 		}
+
 	default:
 		fmt.Println("Invalid choice. Please enter 'e' for encryption or 'd' for decryption.")
 	}
