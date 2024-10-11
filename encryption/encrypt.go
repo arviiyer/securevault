@@ -56,8 +56,8 @@ func EncryptFile(filePath string, key []byte) error {
 	// Encrypt the content
 	ciphertext := aesgcm.Seal(nonce, nonce, fileContent, nil)
 
-	// Create the output file with the ".lock" extension
-	encFilePath := filePath + ".lock"
+	// Create the output file with the ".enc" extension
+	encFilePath := filePath + ".enc"
 	outFile, err := os.Create(encFilePath)
 	if err != nil {
 		return fmt.Errorf("could not create encrypted file %v: %v", encFilePath, err)
