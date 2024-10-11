@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,7 +13,7 @@ import (
 // LoadAESKey loads the AES key from the file in the "key/" directory
 func LoadAESKey() ([]byte, error) {
 	keyPath := filepath.Join("key", "aes.key")
-	key, err := ioutil.ReadFile(keyPath)
+	key, err := os.ReadFile(keyPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load AES key: %v", err)
 	}

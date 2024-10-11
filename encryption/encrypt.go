@@ -6,7 +6,6 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -28,7 +27,7 @@ func GenerateAndSaveAESKey() ([]byte, error) {
 
 	// Save the key to a file
 	keyPath := filepath.Join("key", "aes.key")
-	err = ioutil.WriteFile(keyPath, key, 0644)
+	err = os.WriteFile(keyPath, key, 0644)
 	if err != nil {
 		return nil, fmt.Errorf("failed to save AES key: %v", err)
 	}
