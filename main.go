@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github/arviiyer/ransomware-poc/encryption" // Import the encryption package
+	"github.com/arviiyer/ransomware-poc/encryption" // Import the encryption package
 )
 
 func main() {
