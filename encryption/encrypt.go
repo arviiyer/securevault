@@ -116,4 +116,3 @@ func EncryptFilesInDirectory(dirPath string, key []byte) error {
 	})
 	return err
 }
-
