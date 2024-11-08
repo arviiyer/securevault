@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/arviiyer/ransomware-poc/encryption"  // Import the encryption package
-	"github.com/arviiyer/ransomware-poc/decryption"  // Import the decryption package
+	"github.com/arviiyer/ransomware-poc/decryption" // Import the decryption package
+	"github.com/arviiyer/ransomware-poc/encryption" // Import the encryption package
 	"strings"
 )
 
@@ -63,11 +63,10 @@ func main() {
 		if err != nil {
 			fmt.Println("Error decrypting files in the directory:", err)
 		} else {
-			fmt.Println("All .enc files in the directory were decrypted successfully!")
+			fmt.Println("All .lock files in the directory were decrypted successfully!")
 		}
 
 	default:
 		fmt.Println("Invalid choice. Please enter 'e' for encryption or 'd' for decryption.")
 	}
 }
-
