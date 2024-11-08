@@ -63,7 +63,7 @@ func main() {
 		if err != nil {
 			fmt.Println("Error decrypting files in the directory:", err)
 		} else {
-			fmt.Println("All .lock files in the directory were decrypted successfully!")
+			fmt.Println("All .enc files in the directory were decrypted successfully!")
 		}
 
 	default:
