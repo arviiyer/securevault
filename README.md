@@ -1,6 +1,6 @@
-# Vaultify: A Secure File Encryption and Decryption Tool
+# SecureVault: A Secure File Encryption and Decryption Tool
 
-Vaultify is a lightweight and efficient tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
+SecureVault is a lightweight and efficient tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
 
 ---
 
@@ -32,8 +32,8 @@ Vaultify is a lightweight and efficient tool built in Go that allows users to se
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/arviiyer/vaultify.git
-   cd vaultify
+   git clone https://github.com/arviiyer/securevault.git
+   cd securevault
    ```
 
 2. Install dependencies:
@@ -43,7 +43,7 @@ Vaultify is a lightweight and efficient tool built in Go that allows users to se
 
 3. Build the project:
    ```bash
-   go build -o vaultify
+   go build -o securevault
    ```
 
 ---
@@ -52,7 +52,7 @@ Vaultify is a lightweight and efficient tool built in Go that allows users to se
 
 1. **Run the program**:
    ```bash
-   ./vaultify
+   ./securevault
    ```
 
 2. **Follow the prompts**:
