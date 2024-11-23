@@ -4,47 +4,44 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 )
 
-// GenerateAESKey generates a 256-bit AES key and saves it to a file
+// GenerateAndSaveAESKey generates a random AES-256 key and saves it to a file
 func GenerateAndSaveAESKey() ([]byte, error) {
-	// Generate a random 256-bit AES key
-	key := make([]byte, 32)
-	_, err := rand.Read(key)
-	if err != nil {
-		return nil, fmt.Errorf("failed to generate AES key: %v", err)
+	key := make([]byte, 32) // 256 bits
+	if _, err := rand.Read(key); err != nil {
+		return nil, fmt.Errorf("could not generate random key: %v", err)
 	}
 
-	// Ensure the "key/" directory exists
-	err = os.MkdirAll("key", 0755)
+	encodedKey := base64.StdEncoding.EncodeToString(key)
+	keyFile, err := os.Create("aes_key.txt")
 	if err != nil {
-		return nil, fmt.Errorf("failed to create key directory: %v", err)
+		return nil, fmt.Errorf("could not create key file: %v", err)
+	}
+	defer keyFile.Close()
+
+	_, err = keyFile.WriteString(encodedKey)
+	if err != nil {
+		return nil, fmt.Errorf("could not write key to file: %v", err)
 	}
 
-	// Save the key to a file
-	keyPath := filepath.Join("key", "aes.key")
-	err = os.WriteFile(keyPath, key, 0644)
-	if err != nil {
-		return nil, fmt.Errorf("failed to save AES key: %v", err)
-	}
-
-	fmt.Println("AES key saved to:", keyPath)
 	return key, nil
 }
 
-// EncryptFile encrypts a single file and saves it with a .enc extension
+// EncryptFile encrypts the given file with the provided AES key
 func EncryptFile(filePath string, key []byte) error {
-	// Create AES cipher block
+	// Create a new AES cipher block
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return err
 	}
 
-	// Create a new GCM (Galois/Counter Mode) cipher
+	// Create GCM (Galois/Counter Mode) from the AES block cipher
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
 		return err
@@ -116,3 +113,4 @@ func EncryptFilesInDirectory(dirPath string, key []byte) error {
 	})
 	return err
 }
+
