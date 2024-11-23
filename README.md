@@ -66,14 +66,16 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 
 You can also run the SecureVault tool using Docker.
 
-1. **Build the Docker image**:
+### Pull from Docker Hub
+
+1. **Pull the Docker image**:
    ```bash
-   docker build -t securevault .
+   docker pull arviiyer/securevault:latest
    ```
 
-2. **Run the Docker container for encryption/decryption**:
+2. **Run the Docker container**:
    ```bash
-   docker run --rm -it -v ~/codebase/go-projects/securevault/test/:/test -v ~/codebase/go-projects/securevault/keydir:/keys securevault
+   docker run --rm -it -v ~/codebase/go-projects/securevault/test/:/test -v ~/codebase/go-projects/securevault/keydir:/keys arviiyer/securevault:latest
    ```
 
    - **Explanation**:
