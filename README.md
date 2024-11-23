@@ -101,7 +101,7 @@ All .enc files in the directory were decrypted successfully!
 - Support for additional encryption algorithms.
 - Integration with cloud storage for key backup.
 - Logging and error reporting enhancements.
-- **Parallel File Processing Enhancements**: Further optimize concurrency for even larger workloads.
+- Parallel File Processing Enhancements: Further optimize concurrency for even larger workloads.
 
 ---
 
