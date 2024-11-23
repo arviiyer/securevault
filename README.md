@@ -1,12 +1,13 @@
 # SecureVault: A Secure File Encryption and Decryption Tool
 
-SecureVault is a lightweight and blazingly fast tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
+SecureVault is a lightweight and blazingly fast tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. Now, with **concurrency**, SecureVault takes advantage of multi-core processing to make file encryption and decryption significantly faster. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
 
 ---
 
 ## Features
 
 - **AES-256 Encryption**: Industry-standard encryption to secure your files.
+- **Blazingly Fast with Concurrency**: Utilizes goroutines and worker pools to encrypt and decrypt multiple files concurrently.
 - **Directory-Level Processing**: Encrypts or decrypts all files in a specified directory.
 - **Key Management**:
   - Automatically generates a secure encryption key.
@@ -19,12 +20,12 @@ SecureVault is a lightweight and blazingly fast tool built in Go that allows use
 
 1. **Encryption**:
    - Generates a random AES-256 encryption key.
-   - Encrypts all files in the specified directory and appends `.enc` to their filenames.
+   - Encrypts all files in the specified directory concurrently and appends `.enc` to their filenames.
    - Saves the key securely for future decryption.
 
 2. **Decryption**:
    - Loads the previously saved AES key.
-   - Decrypts all `.enc` files in the specified directory and restores their original state.
+   - Decrypts all `.enc` files in the specified directory concurrently and restores their original state.
 
 ---
 
@@ -100,9 +101,11 @@ All .enc files in the directory were decrypted successfully!
 - Support for additional encryption algorithms.
 - Integration with cloud storage for key backup.
 - Logging and error reporting enhancements.
+- **Parallel File Processing Enhancements**: Further optimize concurrency for even larger workloads.
 
 ---
 
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).
+
