@@ -16,7 +16,6 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-key/
 test/
 
 # Go workspace file
@@ -25,3 +24,6 @@ go.work.sum
 
 # env file
 .env
+
+# AES Key
+aes_key.txt
