@@ -13,6 +13,15 @@ import (
 
 // GenerateAndSaveAESKey generates a random AES-256 key and saves it to a file
 func GenerateAndSaveAESKey() ([]byte, error) {
+	// Ensure the key directory exists
+	keyDir := "~/.securevault/keydir/"
+	if _, err := os.Stat(keyDir); os.IsNotExist(err) {
+		err := os.MkdirAll(keyDir, os.ModePerm)
+		if err != nil {
+			return nil, fmt.Errorf("could not create key directory: %v", err)
+		}
+	}
+
 	key := make([]byte, 32) // 256 bits
 	if _, err := rand.Read(key); err != nil {
 		return nil, fmt.Errorf("could not generate random key: %v", err)
