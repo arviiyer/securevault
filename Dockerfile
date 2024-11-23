@@ -1,5 +1,8 @@
 # Use the official Golang image to create a binary.
 FROM golang:1.23 as builder
+RUN useradd -ms /bin/bash secureuser
+USER secureuser
+WORKDIR /home/secureuser/app
 WORKDIR /app
 
 # Copy and download dependencies using go mod
