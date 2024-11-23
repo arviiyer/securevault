@@ -75,17 +75,17 @@ You can also run the SecureVault tool using Docker.
 
 2. **Run the Docker container**:
    ```bash
-   docker run --rm -it -v ~/codebase/go-projects/securevault/test/:/test -v ~/codebase/go-projects/securevault/keydir:/keys arviiyer/securevault:latest
+   docker run --rm -it -v /path/to/your/files:/data -v /path/to/your/keydir:/keys arviiyer/securevault:latest
    ```
 
    - **Explanation**:
-     - `-v ~/codebase/go-projects/securevault/test/:/test`: Mounts the directory containing the files to be encrypted or decrypted.
-     - `-v ~/codebase/go-projects/securevault/keydir:/keys`: Mounts a directory to store the AES encryption key persistently.
+     - `-v /path/to/your/files:/data`: Mounts the directory containing the files to be encrypted or decrypted.
+     - `-v /path/to/your/keydir:/keys`: Mounts a directory to store the AES encryption key persistently.
 
 3. **Change Ownership of the Key Directory** (Optional):
    - After running the container, the `keydir` directory might be owned by `root`. To change the ownership to your user:
    ```bash
-   sudo chown -R $USER:$USER ~/codebase/go-projects/securevault/keydir
+   sudo chown -R $USER:$USER /path/to/your/keydir
    ```
 
 ---
@@ -95,14 +95,14 @@ You can also run the SecureVault tool using Docker.
 ### Encryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): e
-Enter directory path: /test
+Enter directory path: /data
 All files in the directory were encrypted successfully!
 ```
 
 ### Decryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): d
-Enter directory path: /test
+Enter directory path: /data
 All .enc files in the directory were decrypted successfully!
 ```
 
