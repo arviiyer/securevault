@@ -20,8 +20,8 @@ func GenerateAndSaveAESKey() ([]byte, error) {
 
 	encodedKey := base64.StdEncoding.EncodeToString(key)
 
-	// Set the key directory to ~/.securevault/keydir
-	keyDir := filepath.Join(os.Getenv("HOME"), ".securevault", "keydir")
+	// Set the key directory to ~/.keydir/
+	keyDir := filepath.Join(os.Getenv("HOME"), ".keydir")
 
 	// Create key directory if it does not exist
 	if err := os.MkdirAll(keyDir, 0600); err != nil {

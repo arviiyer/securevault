@@ -13,7 +13,13 @@ import (
 
 // LoadAESKey loads the AES key from a file
 func LoadAESKey() ([]byte, error) {
-	keyFile, err := os.Open("~/.securevault/keydir/aes_key")
+	// Get the key directory
+	keyDir := filepath.Join(os.Getenv("HOME"), ".keydir")
+
+	// Get the key from the directory
+	keyFilePath := filepath.Join(keyDir, "aes_key")
+
+	keyFile, err := os.Open(keyFilePath)
 	if err != nil {
 		return nil, fmt.Errorf("could not open key file: %v", err)
 	}
