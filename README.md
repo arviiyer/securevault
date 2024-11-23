@@ -64,7 +64,7 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 
 ## Running with Docker
 
-You can also run the SecureVault tool using Docker. I hate running anything as root 🙃, so the Docker container runs as a **non-root user**. This can be changed in the Dockerfile if needed.
+You can also run the SecureVault tool using Docker. I hate running containers as root 🙃, so the Docker container runs as a **non-root user**. This can be changed in the Dockerfile if needed.
 
 ### Pull from Docker Hub
 
@@ -75,18 +75,14 @@ You can also run the SecureVault tool using Docker. I hate running anything as r
 
 2. **Run the Docker container**:
    ```bash
-   docker run --rm -it -v /path/to/your/files:/data -v ~/.keydir:/home/secureuser/.keydir arviiyer/securevault:latest
+   docker run --rm -it -v /path/to/your/files:/data -v ~/.keydir:/home/secureuser/.keydir --user $(id -u):$(id -g) -e KEY_DIR="/home/secureuser/.keydir" arviiyer/securevault:latest
    ```
 
    - **Explanation**:
      - `-v /path/to/your/files:/data`: Mounts the directory containing the files to be encrypted or decrypted.
      - `-v ~/.keydir:/home/secureuser/.keydir`: Mounts the key directory to ensure the encryption key is accessible.
-
-3. **Change Ownership of the Key Directory** (Optional):
-   - After running the container, the `~/.keydir` directory might be owned by `root`. To change the ownership to your user:
-   ```bash
-   sudo chown -R $USER:$USER ~/.keydir
-   ```
+     - `--user $(id -u):$(id -g)`: Runs the container as the current user to avoid root ownership issues.
+     - `-e KEY_DIR="/home/secureuser/.keydir"`: Sets the key directory environment variable inside the container.
 
 ---
 
