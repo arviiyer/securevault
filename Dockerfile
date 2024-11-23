@@ -22,4 +22,3 @@ COPY --from=builder /app/securevault .
 
 # Command to run the executable
 CMD ["./securevault"]
-
