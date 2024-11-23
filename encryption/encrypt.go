@@ -18,7 +18,7 @@ func GenerateAndSaveAESKey() ([]byte, error) {
 		return nil, fmt.Errorf("could not generate random key: %v", err)
 	}
 	// Save the key to the `/keys/aes_key.txt` directory
-	keyFile, err := os.Create("/keys/aes_key")
+	keyFile, err := os.Create("/keydir/aes_key")
 	if err != nil {
 		return nil, fmt.Errorf("could not create key file: %v", err)
 	}
