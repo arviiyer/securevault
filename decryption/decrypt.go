@@ -20,7 +20,7 @@ func LoadAESKey() ([]byte, error) {
 	}
 
 	// Get the key from the directory
-	keyFilePath := filepath.Join(keyDir, "aes_key.txt")
+	keyFilePath := filepath.Join(keyDir, "aes_key")
 
 	keyFile, err := os.Open(keyFilePath)
 	if err != nil {
