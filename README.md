@@ -21,10 +21,10 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 1. **Encryption**:
    - Generates a random AES-256 encryption key.
    - Encrypts all files in the specified directory concurrently and appends `.enc` to their filenames.
-   - Saves the key securely for future decryption.
+   - Saves the key securely for future decryption in `~/.keydir`.
 
 2. **Decryption**:
-   - Loads the previously saved AES key.
+   - Loads the previously saved AES key from `~/.keydir`.
    - Decrypts all `.enc` files in the specified directory concurrently and restores their original state.
 
 ---
@@ -75,17 +75,17 @@ You can also run the SecureVault tool using Docker.
 
 2. **Run the Docker container**:
    ```bash
-   docker run --rm -it -v /path/to/your/files:/data -v /path/to/your/keydir:/keys arviiyer/securevault:latest
+   docker run --rm -it -v /path/to/your/files:/data -v ~/.keydir:/keys arviiyer/securevault:latest
    ```
 
    - **Explanation**:
      - `-v /path/to/your/files:/data`: Mounts the directory containing the files to be encrypted or decrypted.
-     - `-v /path/to/your/keydir:/keys`: Mounts a directory to store the AES encryption key persistently.
+     - `-v ~/.keydir:/keys`: Mounts the directory to store the AES encryption key persistently.
 
 3. **Change Ownership of the Key Directory** (Optional):
-   - After running the container, the `keydir` directory might be owned by `root`. To change the ownership to your user:
+   - After running the container, the `~/.keydir` directory might be owned by `root`. To change the ownership to your user:
    ```bash
-   sudo chown -R $USER:$USER /path/to/your/keydir
+   sudo chown -R $USER:$USER ~/.keydir
    ```
 
 ---
