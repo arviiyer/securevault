@@ -7,7 +7,7 @@ SecureVault is a lightweight and blazingly fast tool built in Go that allows use
 ## Features
 
 - **AES-256 Encryption**: Industry-standard encryption to secure your files.
-- **Blazingly Fast with Concurrency**: Utilizes goroutines and worker pools to encrypt and decrypt multiple files concurrently.
+- **Blazingly Fast with Concurrency** 🚀: Utilizes goroutines and worker pools to encrypt and decrypt multiple files concurrently.
 - **Directory-Level Processing**: Encrypts or decrypts all files in a specified directory.
 - **Key Management**:
   - Automatically generates a secure encryption key.
