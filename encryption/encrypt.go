@@ -17,14 +17,14 @@ func GenerateAndSaveAESKey() ([]byte, error) {
 	if _, err := rand.Read(key); err != nil {
 		return nil, fmt.Errorf("could not generate random key: %v", err)
 	}
-
-	encodedKey := base64.StdEncoding.EncodeToString(key)
-	keyFile, err := os.Create("aes_key.txt")
+	// Save the key to the `/keys/aes_key.txt` directory
+	keyFile, err := os.Create("/keys/aes_key")
 	if err != nil {
 		return nil, fmt.Errorf("could not create key file: %v", err)
 	}
 	defer keyFile.Close()
 
+	encodedKey := base64.StdEncoding.EncodeToString(key)
 	_, err = keyFile.WriteString(encodedKey)
 	if err != nil {
 		return nil, fmt.Errorf("could not write key to file: %v", err)
@@ -113,4 +113,3 @@ func EncryptFilesInDirectory(dirPath string, key []byte) error {
 	})
 	return err
 }
-

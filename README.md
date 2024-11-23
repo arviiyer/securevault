@@ -13,6 +13,7 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
   - 🛠️ Automatically generates a secure encryption key.
   - 🔐 Saves and retrieves the key for seamless decryption.
 - 🖥️ **Simple Command-Line Interface**: User-friendly prompts for encryption and decryption.
+- 🐳 **Containerized with Docker**: Run SecureVault easily and consistently in any environment using Docker.
 
 ---
 
@@ -51,6 +52,8 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 
 ## Usage
 
+### Running Locally
+
 1. **Run the program**:
    ```bash
    ./securevault
@@ -60,6 +63,20 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
    - Choose between encryption (`e`) or decryption (`d`).
    - Provide the path to the directory containing the files you wish to process.
 
+### Running with Docker
+
+1. **Build the Docker image**:
+   ```bash
+   docker build -t securevault .
+   ```
+
+2. **Run the Docker container**:
+   ```bash
+   docker run --rm -it -v /path/to/your/files:/files securevault
+   ```
+   - Replace `/path/to/your/files` with the directory you want to process.
+   - When prompted for a directory path inside the container, use `/files`.
+
 ---
 
 ## Example
@@ -67,14 +84,14 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 ### Encryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): e
-Enter directory path: /path/to/your/files
+Enter directory path: /files
 All files in the directory were encrypted successfully!
 ```
 
 ### Decryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): d
-Enter directory path: /path/to/your/files
+Enter directory path: /files
 All .enc files in the directory were decrypted successfully!
 ```
 
@@ -93,6 +110,7 @@ All .enc files in the directory were decrypted successfully!
 ## Requirements
 
 - Go 1.20+ (or later)
+- Docker (optional, for containerized deployment)
 
 ---
 
@@ -101,7 +119,7 @@ All .enc files in the directory were decrypted successfully!
 - Support for additional encryption algorithms.
 - Integration with cloud storage for key backup.
 - Logging and error reporting enhancements.
-- Parallel File Processing Enhancements: Further optimize concurrency for even larger workloads.
+- **Parallel File Processing Enhancements**: Further optimize concurrency for even larger workloads.
 
 ---
 
