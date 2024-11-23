@@ -92,6 +92,9 @@ You can also run the SecureVault tool using Docker. I hate running containers as
 ```bash
 Would you like to encrypt or decrypt? (e/d): e
 Enter directory path: /data
+Entered directory path:  /data
+Encrypted /data/test.txt -> /data/test.txt.enc
+Encrypted /data/test.txt successfully
 All files in the directory were encrypted successfully!
 ```
 
@@ -99,6 +102,9 @@ All files in the directory were encrypted successfully!
 ```bash
 Would you like to encrypt or decrypt? (e/d): d
 Enter directory path: /data
+Entered directory path:  /data
+Decrypted /data/test.txt.enc -> /data/test.txt
+Decrypted /data/test.txt.enc successfully
 All .enc files in the directory were decrypted successfully!
 ```
 
