@@ -13,11 +13,14 @@ import (
 
 // LoadAESKey loads the AES key from a file
 func LoadAESKey() ([]byte, error) {
-	// Get the key directory
-	keyDir := filepath.Join(os.Getenv("HOME"), ".keydir")
+	// Get the key directory from the environment variable or use the default
+	keyDir := os.Getenv("KEY_DIR")
+	if keyDir == "" {
+		keyDir = os.ExpandEnv("$HOME/.keydir") // Default to ~/.keydir if KEY_DIR is not set
+	}
 
 	// Get the key from the directory
-	keyFilePath := filepath.Join(keyDir, "aes_key")
+	keyFilePath := filepath.Join(keyDir, "aes_key.txt")
 
 	keyFile, err := os.Open(keyFilePath)
 	if err != nil {
