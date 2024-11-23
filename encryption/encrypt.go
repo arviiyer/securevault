@@ -13,27 +13,28 @@ import (
 
 // GenerateAndSaveAESKey generates a random AES-256 key and saves it to a file
 func GenerateAndSaveAESKey() ([]byte, error) {
-	// Ensure the key directory exists
-	keyDir := "~/.securevault/keydir/"
-	if _, err := os.Stat(keyDir); os.IsNotExist(err) {
-		err := os.MkdirAll(keyDir, os.ModePerm)
-		if err != nil {
-			return nil, fmt.Errorf("could not create key directory: %v", err)
-		}
-	}
-
 	key := make([]byte, 32) // 256 bits
 	if _, err := rand.Read(key); err != nil {
-		return nil, fmt.Errorf("could not generate random key: %v", err)
+		return nil, fmt.Errorf("could not generate key: %v", err)
 	}
-	// Save the key to the `/keys/aes_key.txt` directory
-	keyFile, err := os.Create("/keydir/aes_key")
+
+	encodedKey := base64.StdEncoding.EncodeToString(key)
+
+	// Set the key directory to ~/.securevault/keydir
+	keyDir := filepath.Join(os.Getenv("HOME"), ".securevault", "keydir")
+
+	// Create key directory if it does not exist
+	if err := os.MkdirAll(keyDir, 0600); err != nil {
+		return nil, fmt.Errorf("could not create key directory: %v", err)
+	}
+
+	keyFilePath := filepath.Join(keyDir, "aes_key")
+	keyFile, err := os.Create(keyFilePath)
 	if err != nil {
 		return nil, fmt.Errorf("could not create key file: %v", err)
 	}
 	defer keyFile.Close()
 
-	encodedKey := base64.StdEncoding.EncodeToString(key)
 	_, err = keyFile.WriteString(encodedKey)
 	if err != nil {
 		return nil, fmt.Errorf("could not write key to file: %v", err)
