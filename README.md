@@ -1,6 +1,6 @@
 # SecureVault: A Secure File Encryption and Decryption Tool
 
-SecureVault is a lightweight tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. Now, with **concurrency**, SecureVault takes advantage of multi-core processing to make file encryption and decryption significantly faster. This tool is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
+SecureVault is a lightweight tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. Now, with **concurrency**, SecureVault takes advantage of multi-core processing to make file encryption and decryption significantly faster. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
 
 ---
 
@@ -13,7 +13,6 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
   - 🛠️ Automatically generates a secure encryption key.
   - 🔐 Saves and retrieves the key for seamless decryption.
 - 🖥️ **Simple Command-Line Interface**: User-friendly prompts for encryption and decryption.
-- 🐳 **Containerized with Docker**: Run SecureVault easily and consistently in any environment using Docker.
 
 ---
 
@@ -52,8 +51,6 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 
 ## Usage
 
-### Running Locally
-
 1. **Run the program**:
    ```bash
    ./securevault
@@ -63,19 +60,31 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
    - Choose between encryption (`e`) or decryption (`d`).
    - Provide the path to the directory containing the files you wish to process.
 
-### Running with Docker
+---
+
+## Running with Docker
+
+You can also run the SecureVault tool using Docker.
 
 1. **Build the Docker image**:
    ```bash
    docker build -t securevault .
    ```
 
-2. **Run the Docker container**:
+2. **Run the Docker container for encryption/decryption**:
    ```bash
-   docker run --rm -it -v /path/to/your/files:/files securevault
+   docker run --rm -it -v ~/codebase/go-projects/securevault/test/:/test -v ~/codebase/go-projects/securevault/keydir:/keys securevault
    ```
-   - Replace `/path/to/your/files` with the directory you want to process.
-   - When prompted for a directory path inside the container, use `/files`.
+
+   - **Explanation**:
+     - `-v ~/codebase/go-projects/securevault/test/:/test`: Mounts the directory containing the files to be encrypted or decrypted.
+     - `-v ~/codebase/go-projects/securevault/keydir:/keys`: Mounts a directory to store the AES encryption key persistently.
+
+3. **Change Ownership of the Key Directory** (Optional):
+   - After running the container, the `keydir` directory might be owned by `root`. To change the ownership to your user:
+   ```bash
+   sudo chown -R $USER:$USER ~/codebase/go-projects/securevault/keydir
+   ```
 
 ---
 
@@ -84,14 +93,14 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 ### Encryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): e
-Enter directory path: /files
+Enter directory path: /test
 All files in the directory were encrypted successfully!
 ```
 
 ### Decryption
 ```bash
 Would you like to encrypt or decrypt? (e/d): d
-Enter directory path: /files
+Enter directory path: /test
 All .enc files in the directory were decrypted successfully!
 ```
 
@@ -110,7 +119,6 @@ All .enc files in the directory were decrypted successfully!
 ## Requirements
 
 - Go 1.20+ (or later)
-- Docker (optional, for containerized deployment)
 
 ---
 
