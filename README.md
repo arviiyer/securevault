@@ -1,6 +1,6 @@
 # SecureVault: A Secure File Encryption and Decryption Tool
 
-SecureVault is a lightweight tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. Now, with **concurrency**, SecureVault takes advantage of multi-core processing to make file encryption and decryption significantly faster. This project is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
+SecureVault is a lightweight tool built in Go that allows users to securely encrypt and decrypt files within a directory using AES-256 encryption. Now, with **concurrency**, SecureVault takes advantage of multi-core processing to make file encryption and decryption significantly faster. This tool is ideal for anyone looking to safeguard sensitive data or learn about implementing cryptographic techniques.
 
 ---
 
