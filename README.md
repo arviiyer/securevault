@@ -64,7 +64,7 @@ SecureVault is a lightweight tool built in Go that allows users to securely encr
 
 ## Running with Docker
 
-You can also run the SecureVault tool using Docker. I hate running containers as root 🙃, so the Docker container runs as a **non-root user**. This can be changed in the Dockerfile if needed.
+You can also run the SecureVault tool using Docker. The container runs as a **non-root user**. This can be changed in the Dockerfile if needed.
 
 ### Pull from Docker Hub
 
